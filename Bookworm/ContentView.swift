@@ -9,14 +9,36 @@ import SwiftUI
 
 struct ContentView: View {
 //    @State private var rememberMe = false
-    @AppStorage("notes") private var notes = ""
+//    @AppStorage("notes") private var notes = ""
+    @FetchRequest(sortDescriptors: []) var students: FetchedResults<Student>
+    @Environment(\.managedObjectContext) var moc
     
     var body: some View {
-        NavigationView {
-            TextEditor(text: $notes)
-                .navigationTitle("Notes")
-                .padding()
+        VStack {
+            List(students) { student in
+                Text(student.name ?? "Unknown") //optional
+            }
+            Button("Add") {
+                let firstNames = ["Aisha", "Zari", "Khadija", "Kidum", "Safina"]
+                let lastNames = ["Bakari", "Scott", "Nun", "Kidumbwe", "Sacho"]
+                
+                let chosenFirstName = firstNames.randomElement()
+                let chosenLastName = lastNames.randomElement()
+                
+                let student = Student(context: moc)
+                student.id = UUID()
+                student.name = "\(chosenFirstName ?? "") \(chosenLastName ?? "")"
+                
+                try? moc.save()
+            }
         }
+//        NavigationView {
+//            TextEditor(text: $notes)
+//                .navigationTitle("Notes")
+//                .padding()
+//        }
+        
+        
 //        VStack {
 //            PushButton(title: "Remember me", isOn: $rememberMe)
 //            Text(rememberMe ? "On" : "Off")
