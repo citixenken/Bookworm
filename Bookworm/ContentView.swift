@@ -18,8 +18,6 @@ struct ContentView: View {
     
     @State private var showingAddScreen = false
     
-    @Environment(\.dismiss) var dismiss
-    
     var body: some View {
         
         NavigationView {
@@ -29,7 +27,6 @@ struct ContentView: View {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
                             showingAddScreen.toggle()
-                            dismiss()
                         } label: {
                             Label("Add Book", systemImage: "plus")
                         }

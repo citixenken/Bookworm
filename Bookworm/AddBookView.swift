@@ -18,6 +18,8 @@ struct AddBookView: View {
     
     let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
     
+    @Environment(\.dismiss) var dismiss
+    
     var body: some View {
         NavigationView {
             Form {
@@ -55,6 +57,8 @@ struct AddBookView: View {
                         newBook.review = review
                         
                         try? moc.save()
+                        
+                        dismiss()
                     }
                 }
             }
