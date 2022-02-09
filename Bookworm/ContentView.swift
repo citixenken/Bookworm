@@ -10,28 +10,53 @@ import SwiftUI
 struct ContentView: View {
 //    @State private var rememberMe = false
 //    @AppStorage("notes") private var notes = ""
-    @FetchRequest(sortDescriptors: []) var students: FetchedResults<Student>
+//    @FetchRequest(sortDescriptors: []) var students: FetchedResults<Student>
+//    @Environment(\.managedObjectContext) var moc
+    
     @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: []) var books: FetchedResults<Book>
+    
+    @State private var showingAddScreen = false
+    
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        VStack {
-            List(students) { student in
-                Text(student.name ?? "Unknown") //optional
-            }
-            Button("Add") {
-                let firstNames = ["Aisha", "Zari", "Khadija", "Kidum", "Safina"]
-                let lastNames = ["Bakari", "Scott", "Nun", "Kidumbwe", "Sacho"]
-                
-                let chosenFirstName = firstNames.randomElement()
-                let chosenLastName = lastNames.randomElement()
-                
-                let student = Student(context: moc)
-                student.id = UUID()
-                student.name = "\(chosenFirstName ?? "") \(chosenLastName ?? "")"
-                
-                try? moc.save()
-            }
+        
+        NavigationView {
+            Text("Count: \(books.count)")
+                .navigationTitle("Bookworm")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            showingAddScreen.toggle()
+                            dismiss()
+                        } label: {
+                            Label("Add Book", systemImage: "plus")
+                        }
+                    }
+                }
+                .sheet(isPresented: $showingAddScreen) {
+                    AddBookView()
+                }
         }
+//        VStack {
+//            List(students) { student in
+//                Text(student.name ?? "Unknown") //optional
+//            }
+//            Button("Add") {
+//                let firstNames = ["Aisha", "Zari", "Khadija", "Kidum", "Safina"]
+//                let lastNames = ["Bakari", "Scott", "Nun", "Kidumbwe", "Sacho"]
+//
+//                let chosenFirstName = firstNames.randomElement()
+//                let chosenLastName = lastNames.randomElement()
+//
+//                let student = Student(context: moc)
+//                student.id = UUID()
+//                student.name = "\(chosenFirstName ?? "") \(chosenLastName ?? "")"
+//
+//                try? moc.save()
+//            }
+//        }
 //        NavigationView {
 //            TextEditor(text: $notes)
 //                .navigationTitle("Notes")
