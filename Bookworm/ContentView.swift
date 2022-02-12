@@ -14,7 +14,7 @@ struct ContentView: View {
     //    @Environment(\.managedObjectContext) var moc
     
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: []) var books: FetchedResults<Book>
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.title, order: .reverse), SortDescriptor(\.author)]) var books: FetchedResults<Book>
     
     @State private var showingAddScreen = false
     
